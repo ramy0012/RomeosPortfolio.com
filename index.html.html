@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrinceRomeo | Professional Roblox Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background: transparent;
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Rain Animation - More Visible */
+        .rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 30%, #3498db 70%, #2980b9 100%);
+        }
+
+        .raindrop {
+            position: absolute;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 1), rgba(173, 216, 230, 0.9), rgba(135, 206, 250, 0.8));
+            width: 6px;
+            height: 120px;
+            animation: fall linear infinite;
+            border-radius: 0 0 50% 50%;
+            box-shadow: 0 0 12px rgba(173, 216, 230, 1);
+            opacity: 1;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100vh);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh);
+                opacity: 0.5;
+            }
+        }
+
+        /* Enhanced Rain Background */
+        .rain::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(173, 216, 230, 0.05) 0%, transparent 60%),
+                radial-gradient(circle at 70% 80%, rgba(135, 206, 250, 0.03) 0%, transparent 60%),
+                linear-gradient(135deg, rgba(44, 62, 80, 0.7) 0%, rgba(52, 73, 94, 0.6) 50%, rgba(52, 152, 219, 0.5) 100%);
+        }
+
+        /* Floating Particles - Rain Theme */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(173, 216, 230, 0.3);
+            border-radius: 50%;
+            animation: float 20s linear infinite;
+            box-shadow: 0 0 10px rgba(173, 216, 230, 0.3);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(44, 62, 80, 0.95);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2a5298;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #2a5298;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: #2a5298;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 30%, #2c3e50 70%, #1a252f 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(243, 156, 18, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(52, 152, 219, 0.1) 0%, transparent 50%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.4;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 30px rgba(243, 156, 18, 0.3);
+            animation: fadeInUp 1s ease, gentleFloat 6s ease-in-out infinite;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.3s both;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 30px rgba(116, 185, 255, 0.4), 0 0 25px rgba(116, 185, 255, 0.3);
+            animation: fadeInUp 1s ease 0.6s both, buttonGlow 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(116, 185, 255, 0.3);
+        }
+
+        @keyframes buttonGlow {
+            0%, 100% { 
+                box-shadow: 0 8px 30px rgba(116, 185, 255, 0.4), 0 0 25px rgba(116, 185, 255, 0.3);
+            }
+            50% { 
+                box-shadow: 0 15px 45px rgba(116, 185, 255, 0.6), 0 0 40px rgba(116, 185, 255, 0.5);
+            }
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(116, 185, 255, 0.7), 0 0 50px rgba(116, 185, 255, 0.5);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        /* Trust Section */
+        .trust-section {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .trust-badges {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .trust-badge {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trust-badge:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border-color: #00d4aa;
+        }
+
+        .trust-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(45deg, #00d4aa, #2a5298);
+        }
+
+        .trust-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #2a5298, #4a90e2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.8rem;
+            color: white;
+            box-shadow: 0 6px 20px rgba(42, 82, 152, 0.3);
+        }
+
+        .trust-badge h3 {
+            font-size: 1.4rem;
+            color: #2a5298;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .trust-badge p {
+            color: #666;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Portfolio Section */
+        .portfolio-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 8rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            color: #2a5298;
+            margin-bottom: 3rem;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(45deg, #00d4aa, #2a5298);
+            border-radius: 2px;
+        }
+
+        .project-showcase {
+            background: white;
+            border-radius: 25px;
+            padding: 4rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            margin-top: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-showcase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(45deg, #00d4aa, #2a5298, #4a90e2);
+        }
+
+        .project-title {
+            font-size: 2.5rem;
+            color: #2a5298;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .project-description {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 3rem;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            border-color: #00d4aa;
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.2);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #00d4aa, #00b894);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .video-container {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 3px solid #e9ecef;
+        }
+
+        .video-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-color: #00d4aa;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .video-wrapper:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .video-wrapper iframe {
+            border-radius: 15px;
+        }
+
+        .video-title {
+            font-size: 1.3rem;
+            color: #2a5298;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .video-description {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
+            padding: 8rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00d4aa;
+            box-shadow: 0 0 20px rgba(0, 212, 170, 0.3);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #00d4aa, #00b894);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 212, 170, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #2a5298, #4a90e2);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 25px rgba(42, 82, 152, 0.4);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .project-showcase {
+                padding: 2rem;
+            }
+
+            .videos-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-content {
+                text-align: center;
+                flex-direction: column;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop>
+        <source src="https://www.soundjay.com/misc/sounds/magic-chime-02.mp3" type="audio/mpeg">
+        <source src="calm-music.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Rain Animation -->
+    <div class="rain" id="rain"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Cozy Glow Effect -->
+    <!-- Removed for transparent theme -->
+    
+    <!-- Music Control Button -->
+    <div id="musicControl" style="position: fixed; top: 100px; right: 20px; z-index: 1001; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(20px); border-radius: 50px; padding: 15px; box-shadow: 0 8px 30px rgba(0,0,0,0.2), 0 0 20px rgba(116, 185, 255, 0.3); cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(255, 255, 255, 0.2);" onclick="toggleMusic()">
+        <span id="musicIcon" style="font-size: 20px; filter: drop-shadow(0 0 8px rgba(116, 185, 255, 0.5));">🎵</span>
+    </div>
+
+    <header>
+        <nav class="container">
+            <div class="logo">PrinceRomeo</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>PrinceRomeo</h1>
+            <p>Professional Roblox Developer creating immersive experiences with advanced scripting, custom systems, and seamless gameplay mechanics. Trusted by developers worldwide.</p>
+            <a href="#contact" class="cta-button">Hire Me Today</a>
+        </div>
+    </section>
+
+    <section class="trust-section">
+        <div class="container">
+            <h2 class="section-title">Why Choose Me?</h2>
+            <div class="trust-badges">
+                <div class="trust-badge fade-in">
+                    <div class="trust-icon">🛡️</div>
+                    <h3>100% Reliable</h3>
+                    <p>Proven track record of delivering high-quality scripts on time. Your project success is guaranteed with professional-grade code and ongoing support.</p>
+                </div>
+                <div class="trust-badge fade-in">
+                    <div class="trust-icon">⚡</div>
+                    <h3>Expert Level Skills</h3>
+                    <p>Advanced knowledge in Lua scripting, game mechanics, UI systems, and server-client architecture. Specialized in complex interactive systems.</p>
+                </div>
+                <div class="trust-badge fade-in">
+                    <div class="trust-icon">🎯</div>
+                    <h3>Client Focused</h3>
+                    <p>Direct communication, regular updates, and custom solutions tailored to your vision. Your satisfaction is my top priority.</p>
+                </div>
+                <div class="trust-badge fade-in">
+                    <div class="trust-icon">🔒</div>
+                    <h3>Secure & Clean Code</h3>
+                    <p>Well-documented, optimized scripts with proper error handling and security measures. Code that scales with your game's growth.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="portfolio-section">
+        <div class="container">
+            <h2 class="section-title">Featured Project</h2>
+            <div class="project-showcase fade-in">
+                <h3 class="project-title">Advanced Clothing Store System</h3>
+                <p class="project-description">
+                    A comprehensive clothing store ecosystem featuring complete customer shopping experiences, advanced store ownership mechanics, 
+                    dynamic music systems, customizable store environments, and innovative street stand commerce. Built with scalable 
+                    architecture supporting both traditional storefronts and mobile selling solutions.
+                </p>
+                
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">🛍️</div>
+                        <h4>Customer Experience</h4>
+                        <p>Complete shopping system with browsing, trying on clothes, and secure transactions</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🏪</div>
+                        <h4>Store Management</h4>
+                        <p>Full store ownership with claiming system, music control, and color customization</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎵</div>
+                        <h4>Audio System</h4>
+                        <p>Dynamic background music changing with customizable playlists for each store</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🚶</div>
+                        <h4>Street Stands</h4>
+                        <p>Mobile commerce with portable stands and flexible selling locations</p>
+                    </div>
+                </div>
+
+                <div class="videos-grid">
+                    <div class="video-container fade-in">
+                        <div class="video-wrapper">
+                            <video width="100%" height="250" controls>
+                                <source src="video1.mp4" type="video/mp4">
+                                <source src="video1.webm" type="video/webm">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <h4 class="video-title">Customer Shopping Experience</h4>
+                        <p class="video-description">Complete shopping journey - browsing stores, trying on clothes, purchasing items, and interacting with other players as a customer</p>
+                    </div>
+                    <div class="video-container fade-in">
+                        <div class="video-wrapper">
+                            <video width="100%" height="250" controls>
+                                <source src="video2.mp4" type="video/mp4">
+                                <source src="video2.webm" type="video/webm">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <h4 class="video-title">Store Ownership & Customization</h4>
+                        <p class="video-description">Advanced store management - claiming stores, changing background music, customizing colors, and setting up your business</p>
+                    </div>
+                    <div class="video-container fade-in">
+                        <div class="video-wrapper">
+                            <video width="100%" height="250" controls>
+                                <source src="video3.mp4" type="video/mp4">
+                                <source src="video3.webm" type="video/webm">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <h4 class="video-title">Street Stand System</h4>
+                        <p class="video-description">Mobile commerce features - setting up street stands, portable selling mechanics, and flexible business opportunities</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title" style="color: white;">Ready to Start Your Project?</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 3rem; opacity: 0.9;">
+                Let's discuss your vision and create something amazing together
+            </p>
+            <div class="contact-form fade-in">
+                <div style="text-align: center; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); padding: 3rem; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.2);">
+                    <h3 style="margin-bottom: 2rem; font-size: 1.8rem;">Get In Touch</h3>
+                    
+                    <div style="display: grid; gap: 2rem; max-width: 400px; margin: 0 auto;">
+                        <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(116, 185, 255, 0.3); cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);" onclick="copyToClipboard('romeothestar')" onmouseover="this.style.borderColor='rgba(116, 185, 255, 0.6)'; this.style.background='rgba(255, 255, 255, 0.15)'; this.style.boxShadow='0 12px 35px rgba(116, 185, 255, 0.3)'" onmouseout="this.style.borderColor='rgba(116, 185, 255, 0.3)'; this.style.background='rgba(255, 255, 255, 0.1)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.2)'">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem; filter: drop-shadow(0 0 8px rgba(116, 185, 255, 0.5));">💬</div>
+                            <h4 style="margin-bottom: 0.5rem; color: #74b9ff; text-shadow: 0 0 10px rgba(116, 185, 255, 0.3);">Discord</h4>
+                            <p style="margin: 0; font-family: monospace; font-size: 1.1rem; color: rgba(255, 255, 255, 0.9);">romeothestar</p>
+                            <small style="opacity: 0.7; color: rgba(255, 255, 255, 0.7);">Click to copy</small>
+                        </div>
+                        
+                        <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); padding: 1.5rem; border-radius: 15px; border: 1px solid rgba(116, 185, 255, 0.3); cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);" onclick="copyToClipboard('XxromiostarxX')" onmouseover="this.style.borderColor='rgba(116, 185, 255, 0.6)'; this.style.background='rgba(255, 255, 255, 0.15)'; this.style.boxShadow='0 12px 35px rgba(116, 185, 255, 0.3)'" onmouseout="this.style.borderColor='rgba(116, 185, 255, 0.3)'; this.style.background='rgba(255, 255, 255, 0.1)'; this.style.boxShadow='0 8px 25px rgba(0, 0, 0, 0.2)'">
+                            <div style="font-size: 2rem; margin-bottom: 0.5rem; filter: drop-shadow(0 0 8px rgba(116, 185, 255, 0.5));">🎮</div>
+                            <h4 style="margin-bottom: 0.5rem; color: #74b9ff; text-shadow: 0 0 10px rgba(116, 185, 255, 0.3);">Roblox</h4>
+                            <p style="margin: 0; font-family: monospace; font-size: 1.1rem; color: rgba(255, 255, 255, 0.9);">XxromiostarxX</p>
+                            <small style="opacity: 0.7; color: rgba(255, 255, 255, 0.7);">Click to copy</small>
+                        </div>
+                    </div>
+                    
+                    <p style="margin-top: 2rem; opacity: 0.9; font-size: 1.1rem;">
+                        Ready to bring your vision to life? Contact me directly!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <p>&copy; 2025 PrinceRomeo - Professional Roblox Developer. All rights reserved.</p>
+                    <p>Discord: romeothestar • Roblox: XxromiostarxX • Trusted by developers worldwide</p>
+                </div>
+                <div class="social-links">
+                    <a href="#" title="Discord: romeothestar" onclick="copyToClipboard('romeothestar')">💬</a>
+                    <a href="#" title="Roblox: XxromiostarxX" onclick="copyToClipboard('XxromiostarxX')">🎮</a>
+                    <a href="#portfolio" title="View Portfolio">⭐</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+                header.style.boxShadow = '0 4px 25px rgba(0, 0, 0, 0.15)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+                header.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+            }
+        });
+
+        // Form submission
+        // Removed - no longer needed since we removed the email form
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                alert(`Copied "${text}" to clipboard!`);
+            }, function(err) {
+                // Fallback for older browsers
+                const textArea = document.createElement("textarea");
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    alert(`Copied "${text}" to clipboard!`);
+                } catch (err) {
+                    alert('Unable to copy to clipboard');
+                }
+                document.body.removeChild(textArea);
+            });
+        }
+
+        // Background music functionality
+        let isPlaying = false;
+        const music = document.getElementById('backgroundMusic');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicControl = document.getElementById('musicControl');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                music.pause();
+                musicIcon.textContent = '🎵';
+                musicControl.style.opacity = '0.7';
+                isPlaying = false;
+            } else {
+                music.play().then(() => {
+                    musicIcon.textContent = '🔊';
+                    musicControl.style.opacity = '1';
+                    isPlaying = true;
+                }).catch(error => {
+                    console.log('Music playback failed:', error);
+                    alert('Unable to play background music. Please check if audio file exists.');
+                });
+            }
+        }
+
+        // Auto-start music after user interaction (required by browsers)
+        let hasInteracted = false;
+        function enableMusicAfterInteraction() {
+            if (!hasInteracted) {
+                hasInteracted = true;
+                // You can uncomment this to auto-start music after first click
+                // toggleMusic();
+            }
+        }
+
+        document.addEventListener('click', enableMusicAfterInteraction, { once: true });
+
+        // Rain Animation
+        function createRain() {
+            const rainContainer = document.getElementById('rain');
+            
+            function createRaindrop() {
+                const drop = document.createElement('div');
+                drop.className = 'raindrop';
+                drop.style.left = Math.random() * 100 + '%';
+                drop.style.height = Math.random() * 50 + 20 + 'px';
+                drop.style.animationDuration = Math.random() * 2 + 1 + 's';
+                drop.style.opacity = Math.random() * 0.3 + 0.1;
+                rainContainer.appendChild(drop);
+                
+                setTimeout(() => {
+                    if (drop.parentNode) {
+                        drop.parentNode.removeChild(drop);
+                    }
+                }, 3000);
+            }
+            
+            setInterval(createRaindrop, 100);
+        }
+
+        // Floating Particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = particle.style.height = Math.random() * 4 + 2 + 'px';
+                particle.style.animationDuration = Math.random() * 10 + 10 + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particlesContainer.appendChild(particle);
+                
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 20000);
+            }
+            
+            setInterval(createParticle, 2000);
+        }
+
+        // Initialize animations
+        createRain();
+        createParticles();
+
+        // Add hover effects to trust badges
+        document.querySelectorAll('.trust-badge').forEach(badge => {
+            badge.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            badge.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
